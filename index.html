@@ -2,228 +2,93 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Мета-тег для идеального отображения на планшетах и телефонах -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CULAK V23 - SEARCH ENGINE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CULAK V25 OS</title>
     <style>
-        :root { 
-            --main: #00d4ff; 
-            --glass: rgba(255, 255, 255, 0.15);
-            --bg: linear-gradient(180deg, #001a33 0%, #004d99 100%);
-        }
-        
-        * { 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-sizing: border-box; 
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; 
-            cursor: default; 
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            margin: 0; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            overflow-x: hidden;
-        }
-
-        /* Анимированный фон в стиле Frutiger Aero */
-        .bubble { 
-            position: fixed; 
-            background: rgba(255,255,255,0.1); 
-            border-radius: 50%; 
-            box-shadow: inset 0 5px 15px rgba(255,255,255,0.3); 
-            animation: float 15s infinite linear; 
-            z-index: -1; 
-        }
-        @keyframes float { 
-            from { transform: translateY(110vh); } 
-            to { transform: translateY(-20vh); } 
-        }
-
-        .header { padding: 20px; text-align: center; z-index: 10; }
-        .logo { 
-            font-size: clamp(30px, 8vw, 50px); 
-            font-weight: 900; 
-            background: linear-gradient(#fff, #999); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px var(--main));
-        }
-
-        /* ТА САМАЯ БЕСКОНЕЧНО КРУТЯЩАЯСЯ ЗВЕЗДА */
-        .star-container {
-            width: 70px; height: 70px; 
-            background: var(--glass); 
-            border: 2px solid #fff;
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
+        /* Стиль Frutiger Aero: Градиенты, Глянец, Пузырьки */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
             justify-content: center;
-            margin: 15px auto; 
-            box-shadow: 0 0 30px var(--main);
-            animation: spin-infinite 4s infinite linear; 
-            cursor: pointer;
+            align-items: center;
+            background: linear-gradient(135deg, #0072ff 0%, #00c6ff 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: white;
         }
-        @keyframes spin-infinite { 
-            from { transform: rotate(0deg); } 
-            to { transform: rotate(360deg); } 
-        }
-        .star-container span { font-size: 40px; color: #fff; text-shadow: 0 0 10px #fff; }
 
-        /* Поисковая система */
-        .search-wrapper { 
-            width: 90%; 
-            max-width: 700px; 
-            position: sticky; 
-            top: 15px; 
-            z-index: 100; 
-            margin-bottom: 30px; 
-        }
-        #search-input { 
-            width: 100%; 
-            background: rgba(255,255,255,0.2); 
-            border: 2px solid rgba(255,255,255,0.5); 
-            border-radius: 40px; 
-            padding: 15px 25px; 
-            color: #fff; 
-            font-size: 18px; 
-            outline: none; 
-            backdrop-filter: blur(25px); 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        /* Стеклянная панель (Glassmorphism) */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            padding: 40px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             text-align: center;
-        }
-        #search-input:focus { border-color: var(--main); background: rgba(255,255,255,0.25); }
-
-        /* Контейнер выдачи как в v19 */
-        .results-container { 
-            width: 95%; 
-            max-width: 850px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-            padding-bottom: 40px; 
-        }
-        .search-result { 
-            background: rgba(0, 15, 40, 0.85); 
-            border-radius: 20px; 
-            padding: 20px; 
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px); 
-            animation: slideUp 0.4s ease-out;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); }
+            position: relative;
+            z-index: 10;
         }
 
-        .res-query { color: var(--main); font-size: 12px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .res-content { line-height: 1.6; font-size: 16px; }
-        
-        pre { 
-            background: #000; 
-            color: #0f0; 
-            padding: 12px; 
-            border-radius: 10px; 
-            font-family: 'Consolas', monospace; 
-            overflow-x: auto; 
-            border: 1px solid #333; 
-            margin-top: 10px;
-            font-size: 14px;
+        h1 {
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
         }
-        b { color: var(--main); }
+
+        .status-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 50px;
+        }
+
+        /* Анимированные пузырьки */
+        .bubble {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">CULAK V23</div>
-        <!-- Кнопка теперь крутится всегда -->
-        <div class="star-container" id="theme-trigger"><span>✡</span></div>
-    </div>
+    <!-- Пузырьки для атмосферы Frutiger Aero -->
+    <div class="bubble" style="width: 80px; height: 80px; left: 10%; animation-duration: 12s;"></div>
+    <div class="bubble" style="width: 120px; height: 120px; left: 70%; animation-duration: 18s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 40%; animation-duration: 10s;"></div>
 
-    <div class="search-wrapper">
-        <input type="text" id="search-input" placeholder="Введите ваш запрос..." autocomplete="off">
-    </div>
-
-    <div class="results-container" id="results">
-        <!-- Сюда ИИ будет "выплевывать" ответы -->
+    <div class="glass-panel">
+        <h1>CULAK V25 <span style="font-weight: bold;">INTERFACE</span></h1>
+        <p>Ядро C++ запущено. Текущий статус правды:</p>
+        <div class="status-box" id="output">
+            Ожидание данных от системы...
+        </div>
     </div>
 
     <script>
-        const resultsBox = document.getElementById('results');
-        const searchInput = document.getElementById('search-input');
-        const themeBtn = document.getElementById('theme-trigger');
-
-        // Смена цвета при клике на звезду (сохраняя вращение)
-        themeBtn.addEventListener('click', () => {
-            const hue = Math.floor(Math.random() * 360);
-            document.documentElement.style.setProperty('--main', `hsl(${hue}, 100%, 60%)`);
-        });
-
-        function generateAIResponse(q) {
-            const text = q.toLowerCase();
-            
-            // ЛОГИКА ПОДСТРОЙКИ (ПОИСКОВИК)
-            if (text.includes("код") || text.includes("скрипт")) {
-                if (text.includes("калькулятор")) {
-                    return "<b>Найдено решение: Калькулятор (Python)</b><br>Готовый код для твоих вычислений:<pre># CULAK CALC\na = float(input('A: '))\nop = input('Действие: ')\nb = float(input('B: '))\nprint('Результат:', eval(f'{a}{op}{b}'))</pre>";
-                }
-                return "<b>Результат:</b> Я могу сгенерировать скрипт любой сложности. Напиши задачу подробнее (например: 'код для Pygame' или 'UI для Roblox').";
-            }
-
-            if (text.includes("рецепт") || text.includes("стейк") || text.includes("рибай")) {
-                if (text.includes("рибай") || text.includes("стейк")) {
-                    return "<b>Кулинария: Стейк Рибай.</b><br>1. Мясо должно быть сухим и теплой температуры.<br>2. Жарь по 3 мин с каждой стороны на максимуме.<br>3. Добавь масло, чеснок и розмарин в конце.<br>4. <b>Отдых мяса:</b> 5 минут под фольгой.";
-                }
-                return `<b>Результат:</b> Рецепт для "${q}" готов. Вывести список покупок или способ приготовления?`;
-            }
-
-            if (text === "привет" || text === "ку" || text === "хай") {
-                return "<b>CULAK SYSTEM:</b> Привет! Твой поисковик работает стабильно. Введи любой вопрос в строку выше.";
-            }
-
-            if (text.includes("огурец")) {
-                return "<b>Инфо: Огурец.</b> Полезный овощ, на 95% состоящий из воды. Отлично подходит для перекуса при долгой работе за компьютером.";
-            }
-
-            // УНИВЕРСАЛЬНЫЙ ОТВЕТ НА ЛЮБОЙ ЗАПРОС
-            return `<b>Поиск по "${q}":</b><br>Я проанализировал данные. Твой запрос принят в обработку. Уточни, тебе нужно техническое решение, пошаговый гайд или краткая справка?`;
+        // Функция для обновления текста (в будущем можно подключить к API)
+        function updateStatus(text) {
+            document.getElementById('output').innerText = text;
         }
-
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && searchInput.value.trim()) {
-                const queryVal = searchInput.value;
-                searchInput.value = '';
-                
-                // Создаем карточку выдачи
-                const card = document.createElement('div');
-                card.className = 'search-result';
-                card.innerHTML = `
-                    <div class="res-query">Результат по запросу: ${queryVal}</div>
-                    <div class="res-content">${generateAIResponse(queryVal)}</div>
-                `;
-                
-                // Добавляем в начало списка (как в топ выдачи)
-                resultsBox.insertBefore(card, resultsBox.firstChild);
-                
-                // Легкая вибрация или скролл для планшета
-                window.scrollTo({ top: 150, behavior: 'smooth' });
-            }
-        });
-
-        // Создание пузырьков для атмосферы
-        for(let i=0; i<15; i++) {
-            let b = document.createElement('div'); b.className='bubble';
-            let s = Math.random()*50+20; b.style.width=s+'px'; b.style.height=s+'px';
-            b.style.left=Math.random()*100+'%'; b.style.animationDuration=(8+Math.random()*12)+'s';
-            document.body.appendChild(b);
-        }
+        
+        // Пример: CULAK говорит правду
+        setTimeout(() => {
+            updateStatus("Система активна. База знаний загружена.");
+        }, 2000);
     </script>
 </body>
-  </html>
+</html>
